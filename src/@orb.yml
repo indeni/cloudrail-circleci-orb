@@ -1,4 +1,4 @@
-version: 1.0
+version: 2.1
 
 description: >
   Scan your Terraform code for security vulnerabilities before applying. With Cloudrail, you catch security mistakes before they ever make it to your cloud envrionment.
