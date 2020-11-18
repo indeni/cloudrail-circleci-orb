@@ -1,0 +1,8 @@
+version: 1.0
+
+description: >
+  Scan your Terraform code for security vulnerabilities before applying. With Cloudrail, you catch security mistakes before they ever make it to your cloud envrionment.
+
+display:
+  home_url: https://github.com/indeni/cloudrail-circleci-orb/wiki
+  source_url: https://github.com/indeni/cloudrail-circleci-orb
