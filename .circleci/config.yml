@@ -22,7 +22,7 @@ parameters:
     default: "dev:alpha"
 
 jobs:
-  integration_test_1:
+  integration-test-1:
     working_directory: /tmp/test_1
     docker:
       - image: hashicorp/terraform:light
@@ -34,10 +34,10 @@ jobs:
             cd src/tests/sample_tf
             terraform init -input=false
             terraform plan -out plan.out
-#      - cloudrail/scan_terraform:
-#          cloudrail_api_key: $TEST_CLOUDRAIL_API_KEY
-#          plan_output_file: src/tests/sample_tf/plan.out
-#          tf_directory: src/tests/sample_tf
+      - cloudrail/scan_terraform:
+          cloudrail_api_key: $TEST_CLOUDRAIL_API_KEY
+          plan_output_file: src/tests/sample_tf/plan.out
+          tf_directory: src/tests/sample_tf
 
 workflows:
   test-pack:
