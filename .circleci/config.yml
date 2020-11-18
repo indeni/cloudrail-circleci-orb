@@ -35,7 +35,7 @@ jobs:
             cd src/tests/sample_tf
             terraform init -input=false
             terraform plan -out plan.out
-      - cloudrail/terraform-scan:
+      - cloudrail/scan-terraform:
           cloudrail_api_key: $TEST_CLOUDRAIL_API_KEY
           plan_output_file: src/tests/sample_tf/plan.out
           tf_directory: src/tests/sample_tf
