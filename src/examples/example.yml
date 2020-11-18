@@ -1,13 +1,16 @@
 description: >
-  Sample example description.
-# Provide a use-case based example for using this orb.
-# Everything in the `usage` section will be displayed in the orb registry.
-# Comments are not retained.
+  Simple example where Terraform and Cloudrail are used.
+
 usage:
   version: 2.1
   orbs:
-    <orb-name>: <namespace>/<orb-name>@1.2.3
+    cloudrail: indeni/cloudrail@1.0.0
   workflows:
-    use-my-orb:
+    use_cloudrail:
       jobs:
-        - <orb-name>/<job-name>
+        - some_job_that_created_a_tf_plan_file
+        - cloudrail/terraform-scan:
+          cloudrail_api_key: my_key
+          plan_output_file: location_of_tf_plan_file_created_in_previous_job
+          tf_directory: directory_where_tf_files_are
+
