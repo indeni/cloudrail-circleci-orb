@@ -1,2 +1,3 @@
 docker:
   - image: indeni/cloudrail-cli:latest
+  

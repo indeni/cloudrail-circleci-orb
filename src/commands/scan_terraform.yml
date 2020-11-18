@@ -13,7 +13,6 @@ parameters:
     description: |
       The directory where the Terraform code is located, must have a ".terraform" directory directly inside it (that is - a "terraform init" was run there).
     type: string
-  
 
 steps:
   - run:

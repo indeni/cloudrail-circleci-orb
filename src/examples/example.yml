@@ -13,4 +13,3 @@ usage:
             cloudrail_api_key: my_key
             plan_output_file: location_of_tf_plan_file_created_in_previous_job
             tf_directory: directory_where_tf_files_are
-
