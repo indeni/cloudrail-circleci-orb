@@ -17,10 +17,10 @@ parameters:
 
 steps:
   - run:
-    name: Analyze Terraform plan with Cloudrail
-    environment:
-      CLOUDRAIL_API_KEY: "<<parameters.cloudrail_api_key>>"
-      PLAN_FILE: "<<parameters.plan_output_file>>"
-      TF_DIRECTORY: "<<parameters.tf_directory>>"
-    command: |
-      run --directory $TF_DIRECTORY --tf-plan $PLAH_FILE --api-key $CLOUDRAIL_API_KEY
+      name: Analyze Terraform plan with Cloudrail
+      environment:
+        CLOUDRAIL_API_KEY: "<<parameters.cloudrail_api_key>>"
+        PLAN_FILE: "<<parameters.plan_output_file>>"
+        TF_DIRECTORY: "<<parameters.tf_directory>>"
+      command: |
+        run --directory $TF_DIRECTORY --tf-plan $PLAH_FILE --api-key $CLOUDRAIL_API_KEY
