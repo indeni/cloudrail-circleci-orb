@@ -17,7 +17,6 @@ parameters:
     description: |
       The ID of the cloud account you would like to run Cloudrail against. This is generally the same acccount the Terraform plan was created for.
     type: string
-    default: ""
 
 steps:
   - run:
