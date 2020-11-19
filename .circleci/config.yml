@@ -37,7 +37,7 @@ jobs:
   integration-test-1-actual:
     working_directory: /tmp/test_1
     docker:
-      - image: indeni/cloudrail:latest
+      - image: indeni/cloudrail-cli:latest
     steps:
       - attach_workspace:
           at: .
@@ -87,7 +87,7 @@ workflows:
       # be skipped.
       # e.g. [semver:patch] will cause a patch version to be published.
       - orb-tools/dev-promote-prod-from-commit-subject:
-          orb-name: indeni/cloudrail-cli
+          orb-name: indeni/cloudrail
           context: orb-publishing
           add-pr-comment: false
           fail-if-semver-not-indicated: true
