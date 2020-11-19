@@ -77,7 +77,7 @@ workflows:
       # Run any integration tests defined within the `jobs` key.
       - integration-test-1-prep:
           context: orb-publishing
-      - integration-test-1-actual
+      - integration-test-1-actual:
           requires:
             - integration-test-1-prep
       # Publish a semver version of the orb. relies on
