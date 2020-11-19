@@ -22,4 +22,4 @@ steps:
         PLAN_FILE: "<<parameters.plan_output_file>>"
         TF_DIRECTORY: "<<parameters.tf_directory>>"
       command: |
-        cloudrail run --directory $TF_DIRECTORY --tf-plan $PLAH_FILE --api-key $CLOUDRAIL_API_KEY
+        cloudrail run --directory $TF_DIRECTORY --tf-plan $PLAN_FILE --api-key $CLOUDRAIL_API_KEY
