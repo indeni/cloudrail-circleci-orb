@@ -8,7 +8,6 @@ orbs:
   shellcheck: circleci/shellcheck@2.0
 
 # Pipeline Parameters
-## These parameters are used internally by orb-tools. Skip to the Jobs section.
 parameters:
   run-integration-tests:
     description: An internal flag to prevent integration test from running before a development version has been created.
@@ -23,7 +22,7 @@ parameters:
     default: "dev:alpha"
 
 jobs:
-  integration_test_1:
+  integration-test-1-prep:
     working_directory: /tmp/test_1
     docker:
       - image: hashicorp/terraform:light
@@ -34,9 +33,21 @@ jobs:
           command: |
             cd src/tests/sample_tf
             terraform init -input=false
-            terraform plan -out plan.out
-      - cloudrail/terraform-scan:
+            AWS_REGION=us-east-1 terraform plan -out plan.out
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  integration-test-1-actual:
+    working_directory: /tmp/test_1
+    docker:
+      - image: indeni/cloudrail-cli:latest
+    steps:
+      - attach_workspace:
+          at: .
+      - cloudrail/scan_terraform:
           cloudrail_api_key: $TEST_CLOUDRAIL_API_KEY
+          cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
           plan_output_file: src/tests/sample_tf/plan.out
           tf_directory: src/tests/sample_tf
 
@@ -46,20 +57,13 @@ workflows:
     jobs:
       - orb-tools/lint # Lint Yaml files
       - orb-tools/pack # Pack orb source
-      - shellcheck/check:
-          dir: ./src/scripts
-          exclude: SC2148
-      - hold-for-dev-publish:
-          type: approval
-          requires:
-            - orb-tools/lint
-            - orb-tools/pack
-            - shellcheck/check
       # Publish development version(s) of the orb.
       - orb-tools/publish-dev:
           orb-name: indeni/cloudrail
           context: orb-publishing
-          requires: [hold-for-dev-publish]
+          requires:
+            - orb-tools/lint
+            - orb-tools/pack
       # Trigger an integration workflow to test the
       # dev:${CIRCLE_SHA1:0:7} version of your orb
       - orb-tools/trigger-integration-tests-workflow:
@@ -76,7 +80,12 @@ workflows:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
       # Run any integration tests defined within the `jobs` key.
-      - integration_test_1
+      - integration-test-1-prep:
+          context: orb-publishing
+      - integration-test-1-actual:
+          context: orb-publishing
+          requires:
+            - integration-test-1-prep
       # Publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"
       # as that will determine whether a patch, minor or major
@@ -90,8 +99,8 @@ workflows:
           fail-if-semver-not-indicated: true
           publish-version-tag: false
           requires:
-            - integration-test-1
+            - integration-test-1-actual
           filters:
             branches:
-              only: 
+              only:
                 - main

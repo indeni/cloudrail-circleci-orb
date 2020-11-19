@@ -14,10 +14,6 @@ For full usage guidelines, see the [orb registry listing](http://circleci.com/or
 
 ---
 
-## FAQ
-
-View the [FAQ in the wiki](https://github.com/CircleCI-Public/slack-orb/wiki/FAQ)
-
 ## Contributing
 
 We welcome [issues](https://github.com/indeni/cloudrail-circleci-orb/issues) to and [pull requests](https://github.com/indeni/cloudrail-circleci-orb/pulls) against this repository!

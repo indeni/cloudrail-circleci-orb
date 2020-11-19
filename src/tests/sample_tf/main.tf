@@ -32,22 +32,6 @@ module "vpc" {
   default_security_group_egress =[]
 }
 
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
-}
-
 resource "aws_iam_role" "test_role" {
   name = "test_role"
 
@@ -97,7 +81,7 @@ EOF
 
 
 resource "aws_instance" "pub_ins" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = "some-ami-id"
   instance_type = "t2.micro"
   subnet_id = module.vpc.public_subnets[0]
   iam_instance_profile = aws_iam_instance_profile.test_profile.name
@@ -105,7 +89,7 @@ resource "aws_instance" "pub_ins" {
 }
 
 resource "aws_instance" "priv_ins" {
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = "some-ami-id"
   instance_type = "t2.micro"
   subnet_id = module.vpc.private_subnets[0]
   iam_instance_profile = aws_iam_instance_profile.test_profile.name

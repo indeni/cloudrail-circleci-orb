@@ -19,6 +19,6 @@ parameters:
 
 steps:
   - scan_terraform:
-      cloudrail_api_key: << parameters.to >>
+      cloudrail_api_key: << parameters.cloudrail_api_key >>
       plan_output_file: << parameters.plan_output_file >>
       tf_directory: << parameters.tf_directory >>

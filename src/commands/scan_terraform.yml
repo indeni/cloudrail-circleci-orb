@@ -13,14 +13,14 @@ parameters:
     description: |
       The directory where the Terraform code is located, must have a ".terraform" directory directly inside it (that is - a "terraform init" was run there).
     type: string
-  
+  cloud-account-id:
+    description: |
+      The ID of the cloud account you would like to run Cloudrail against. This is generally the same acccount the Terraform plan was created for.
+    type: string
+    default: ""
 
 steps:
   - run:
-    name: Analyze Terraform plan with Cloudrail
-    environment:
-      CLOUDRAIL_API_KEY: "<<parameters.cloudrail_api_key>>"
-      PLAN_FILE: "<<parameters.plan_output_file>>"
-      TF_DIRECTORY: "<<parameters.tf_directory>>"
-    command: |
-      run --directory $TF_DIRECTORY --tf-plan $PLAH_FILE --api-key $CLOUDRAIL_API_KEY
+      name: Analyze Terraform plan with Cloudrail
+      command: |
+        cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>"
