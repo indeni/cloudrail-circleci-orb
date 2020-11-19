@@ -9,7 +9,7 @@ usage:
     use_cloudrail:
       jobs:
         - some_job_that_created_a_tf_plan_file
-        - cloudrail/terraform-scan:
+        - cloudrail/scan_terraform:
             cloudrail_api_key: my_key
             plan_output_file: location_of_tf_plan_file_created_in_previous_job
             cloud-account-id: 123456789012
