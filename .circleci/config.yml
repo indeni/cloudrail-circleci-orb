@@ -78,6 +78,7 @@ workflows:
       - integration-test-1-prep:
           context: orb-publishing
       - integration-test-1-actual:
+          context: orb-publishing
           requires:
             - integration-test-1-prep
       # Publish a semver version of the orb. relies on
