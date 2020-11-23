@@ -11,11 +11,13 @@ parameters:
     type: string
   tf_directory:
     description: |
-      The directory where the Terraform code is located, must have a ".terraform" directory directly inside it (that is - a "terraform init" was run there).
+      The directory where the Terraform code is located, must have a ".terraform" directory
+      directly inside it (that is - a "terraform init" was run there).
     type: string
   cloud-account-id:
     description: |
-      The ID of the cloud account you would like to run Cloudrail against. This is generally the same acccount the Terraform plan was created for.
+      The ID of the cloud account you would like to run Cloudrail against.
+      This is generally the same acccount the Terraform plan was created for.
     type: string
   junit-output-file:
     description: |
@@ -28,4 +30,5 @@ steps:
   - run:
       name: Analyze Terraform plan with Cloudrail, provide junit output
       command: |
-        cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" --output-format junit --output-file "<<parameters.junit-output-file>>"
+        cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" 
+          --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" --output-format junit --output-file "<<parameters.junit-output-file>>"
