@@ -30,5 +30,5 @@ steps:
   - run:
       name: Analyze Terraform plan with Cloudrail, provide junit output
       command: |
-        cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" 
+        cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>"
           --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" --output-format junit --output-file "<<parameters.junit-output-file>>"
