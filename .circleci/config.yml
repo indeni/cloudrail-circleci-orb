@@ -50,7 +50,35 @@ jobs:
           cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
           plan_output_file: src/tests/sample_tf/plan.out
           tf_directory: src/tests/sample_tf
-
+  integration-test-2-prep:
+    working_directory: /tmp/test_2
+    docker:
+      - image: hashicorp/terraform:light
+    steps:
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: |
+            cd src/tests/sample_tf
+            terraform init -input=false
+            AWS_REGION=us-east-1 terraform plan -out plan.out
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  integration-test-2-actual:
+    working_directory: /tmp/test_2
+    docker:
+      - image: indeni/cloudrail-cli:latest
+    steps:
+      - attach_workspace:
+          at: .
+      - cloudrail/scan_terraform_junit:
+          cloudrail_api_key: $TEST_CLOUDRAIL_API_KEY
+          cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
+          plan_output_file: src/tests/sample_tf/plan.out
+          tf_directory: src/tests/sample_tf
+          junit-output-file: cloudrail-junit.xml
 workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
@@ -86,6 +114,12 @@ workflows:
           context: orb-publishing
           requires:
             - integration-test-1-prep
+      - integration-test-2-prep:
+          context: orb-publishing
+      - integration-test-2-actual:
+          context: orb-publishing
+          requires:
+            - integration-test-2-prep
       # Publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"
       # as that will determine whether a patch, minor or major
@@ -100,6 +134,7 @@ workflows:
           publish-version-tag: false
           requires:
             - integration-test-1-actual
+            - integration-test-2-actual
           filters:
             branches:
               only:
