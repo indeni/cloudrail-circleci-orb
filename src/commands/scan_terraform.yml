@@ -17,10 +17,16 @@ parameters:
     description: |
       The ID of the cloud account you would like to run Cloudrail against. This is generally the same acccount the Terraform plan was created for.
     type: string
+  execution-source-identifier:
+    description: |
+      An identifier that will be passed to the Cloudrail service to help identify this execution in the web user interface.
+    type: string
+    default: $CIRCLE_BRANCH - $CIRCLE_BUILD_NUM
 
 steps:
   - run:
       name: Analyze Terraform plan with Cloudrail
       command: |
         cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" \
+          --origin ci --build-link "$CIRCLE_BUILD_URL"  --execution-source-identifier "<<parameters.execution-source-identifier>>"  \
           --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>"

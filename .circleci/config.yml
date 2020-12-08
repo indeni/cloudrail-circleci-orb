@@ -54,7 +54,6 @@ jobs:
     working_directory: /tmp/test_2
     docker:
       - image: hashicorp/terraform:0.13.5
-      - image: hashicorp/terraform:light
     steps:
       - checkout
       - run:
