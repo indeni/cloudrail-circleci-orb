@@ -26,9 +26,9 @@ parameters:
 
 steps:
   - run: # Tests must be in a sub directory, per https://support.circleci.com/hc/en-us/articles/360021624194-Test-summary-troubleshooting
-    name: Create test result directory (if not exists)
-    command: |
-      mkdir test_results
+      name: Create test result directory (if not exists)
+      command: |
+        mkdir test_results
   - scan_terraform_junit:
       cloudrail_api_key: << parameters.cloudrail_api_key >>
       plan_output_file: << parameters.plan_output_file >>
