@@ -23,4 +23,5 @@ steps:
       name: Analyze Terraform plan with Cloudrail
       command: |
         cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" \
+          --origin ci --build-link "$CIRCLE_BUILD_URL"  --execution-source-identifier "$CIRCLE_BRANCH - $CIRCLE_BUILD_NUM" \
           --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>"
