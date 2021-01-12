@@ -37,4 +37,5 @@ steps:
       command: |
         cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>"  \
           --origin ci --build-link "$CIRCLE_BUILD_URL"  --execution-source-identifier "<<parameters.execution-source-identifier>>"  \
-          --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" --output-format junit --output-file "<<parameters.junit-output-file>>"
+          --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" --output-format junit --output-file "<<parameters.junit-output-file>>" \
+          --auto-approve
