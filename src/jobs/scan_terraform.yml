@@ -30,13 +30,32 @@ parameters:
       An identifier that will be passed to the Cloudrail service to help identify this execution in the web user interface.
     type: string
     default: $CIRCLE_BRANCH - $CIRCLE_BUILD_NUM
+  junit-output:
+    type: boolean
+    default: false
+  junit-output-file:
+    description: |
+      The name of the JUnit output file.
+    type: string
+    default: cloudrail-junit.xml
 
 
 steps:
   - steps: << parameters.pre-steps >>
+  - when:
+      condition: << parameters.junit-output >>
+      steps:
+        - run: mkdir -p "$(dirname << parameters.junit-output-file >>)"
   - scan_terraform:
       cloudrail_api_key: << parameters.cloudrail_api_key >>
       plan_output_file: << parameters.plan_output_file >>
       tf_directory: << parameters.tf_directory >>
       cloud-account-id: << parameters.cloud-account-id >>
       execution-source-identifier: << parameters.execution-source-identifier >>
+      junit-output:  << parameters.junit-output >>
+      junit-output-file: << parameters.junit-output-file >>
+  - when:
+      condition: << parameters.junit-output >>
+      steps:
+        - store_test_results:
+            path: test_results
