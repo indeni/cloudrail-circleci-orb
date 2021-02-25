@@ -22,9 +22,15 @@ parameters:
       The ID of the cloud account you would like to run Cloudrail against.
       This is generally the same acccount the Terraform plan was created for.
     type: string
+  pre-steps:
+    description: |
+      Steps to run before executing Cloudrail.
+    type: steps
+    default: []
 
 
 steps:
+  - steps: << parameters.pre-steps >>
   - run: # Tests must be in a sub directory, per https://support.circleci.com/hc/en-us/articles/360021624194-Test-summary-troubleshooting
       name: Create test result directory (if not exists)
       command: |
