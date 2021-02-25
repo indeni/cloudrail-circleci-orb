@@ -8,7 +8,7 @@ usage:
   workflows:
     use_cloudrail:
       jobs:
-        - some_job_that_created_a_tf_plan_file
+        - some_job_that_creates_a_tf_plan
         - cloudrail/scan_terraform_junit:
             cloudrail_api_key: my_key
             plan_output_file: location_of_tf_plan_file_created_in_previous_job

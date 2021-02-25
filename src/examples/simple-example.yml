@@ -6,7 +6,7 @@ usage:
   orbs:
     cloudrail: indeni/cloudrail@1.4.0
   jobs:
-    your_job:
+    some_job_that_creates_a_tf_plan:
       docker:
         - image: hashicorp/terraform:latest
       steps:
@@ -20,8 +20,10 @@ usage:
   workflows:
     use_cloudrail:
       jobs:
-        - your_job
+        - some_job_that_creates_a_tf_plan
         - cloudrail/scan_terraform:
+            requires:
+              - some_job_that_creates_a_tf_plan
             cloudrail_api_key: my_key
             cloud-account-id: "123456789012"
             tf_directory: /tmp/workspace/
