@@ -20,11 +20,6 @@ parameters:
     description: |
       The ID of the cloud account you would like to run Cloudrail against. This is generally the same acccount the Terraform plan was created for.
     type: string
-  pre-steps:
-    description: |
-      Steps to run before executing Cloudrail.
-    type: steps
-    default: []
   execution-source-identifier:
     description: |
       An identifier that will be passed to the Cloudrail service to help identify this execution in the web user interface.
@@ -41,7 +36,6 @@ parameters:
 
 
 steps:
-  - steps: << parameters.pre-steps >>
   - when:
       condition: << parameters.junit-output >>
       steps:
