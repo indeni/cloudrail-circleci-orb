@@ -1,4 +1,4 @@
-description: Scan a Terraform plan using Cloudrail, looking for security vulnerabilities, providing a JUnit output for CircleCI to use.
+description: Deprecated. Please use scan_terraform instead.
 
 parameters:
   cloudrail_api_key:

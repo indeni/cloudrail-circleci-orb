@@ -1,5 +1,4 @@
-description: >
-  A simple, straightforward usage of Cloudrail to scan a Terraform plan and produce JUnit-formatted results.
+description: Deprecated. Please use scan_terraform instead.
 
 executor: default
 
@@ -29,11 +28,12 @@ steps:
       name: Create test result directory (if not exists)
       command: |
         mkdir test_results
-  - scan_terraform_junit:
+  - scan_terraform:
       cloudrail_api_key: << parameters.cloudrail_api_key >>
       plan_output_file: << parameters.plan_output_file >>
       tf_directory: << parameters.tf_directory >>
       cloud-account-id: << parameters.cloud-account-id >>
+      junit-output: true
       junit-output-file: test_results/cloudrail-junit.xml
   - store_test_results:
       path: test_results

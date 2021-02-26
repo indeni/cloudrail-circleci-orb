@@ -22,6 +22,14 @@ parameters:
       An identifier that will be passed to the Cloudrail service to help identify this execution in the web user interface.
     type: string
     default: $CIRCLE_BRANCH - $CIRCLE_BUILD_NUM
+  junit-output:
+    type: boolean
+    default: false
+  junit-output-file:
+    description: |
+      The name of the JUnit output file.
+    type: string
+    default: cloudrail-junit.xml
 
 steps:
   - run:
@@ -30,4 +38,5 @@ steps:
         cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" \
           --origin ci --build-link "$CIRCLE_BUILD_URL"  --execution-source-identifier "<<parameters.execution-source-identifier>>"  \
           --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" \
+          <<# parameters.junit-output >> --output-format junit --output-file "<<parameters.junit-output-file>>" <</ parameters.junit-output >> \
           --auto-approve
