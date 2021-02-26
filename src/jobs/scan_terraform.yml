@@ -20,11 +20,6 @@ parameters:
     description: |
       The ID of the cloud account you would like to run Cloudrail against. This is generally the same acccount the Terraform plan was created for.
     type: string
-  pre-steps:
-    description: |
-      Steps to run before executing Cloudrail.
-    type: steps
-    default: []
   execution-source-identifier:
     description: |
       An identifier that will be passed to the Cloudrail service to help identify this execution in the web user interface.
@@ -37,11 +32,10 @@ parameters:
     description: |
       The name of the JUnit output file. CircleCI requires JUnit output files to be in a subdirectory.
     type: string
-    default: cloudrail-junit.xml
+    default: test_results/cloudrail-junit.xml
 
 
 steps:
-  - steps: << parameters.pre-steps >>
   - when:
       condition: << parameters.junit-output >>
       steps:
@@ -58,4 +52,4 @@ steps:
       condition: << parameters.junit-output >>
       steps:
         - store_test_results:
-            path: test_results
+            path: "$(dirname << parameters.junit-output-file >>)"
