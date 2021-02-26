@@ -32,7 +32,7 @@ parameters:
     description: |
       The name of the JUnit output file. CircleCI requires JUnit output files to be in a subdirectory.
     type: string
-    default: cloudrail-junit.xml
+    default: test_results/cloudrail-junit.xml
 
 
 steps:
@@ -52,4 +52,4 @@ steps:
       condition: << parameters.junit-output >>
       steps:
         - store_test_results:
-            path: test_results
+            path: "$(dirname << parameters.junit-output-file >>)"
