@@ -35,7 +35,7 @@ parameters:
     default: false
   junit-output-file:
     description: |
-      The name of the JUnit output file.
+      The name of the JUnit output file. CircleCI requires JUnit output files to be in a subdirectory.
     type: string
     default: cloudrail-junit.xml
 
