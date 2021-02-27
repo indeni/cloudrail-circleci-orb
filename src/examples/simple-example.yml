@@ -30,4 +30,4 @@ usage:
             plan_output_file: /tmp/workspace/terraform.plan
             pre-steps:
               - attach_workspace:
-                at: /tmp/workspace
+                  at: /tmp/workspace
