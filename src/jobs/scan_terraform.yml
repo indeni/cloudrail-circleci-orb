@@ -24,7 +24,7 @@ parameters:
     description: |
       An identifier that will be passed to the Cloudrail service to help identify this execution in the web user interface.
     type: string
-    default: $CIRCLE_BRANCH - $CIRCLE_BUILD_NUM
+    default: $CIRCLE_PROJECT_REPONAME - $CIRCLE_BRANCH - $CIRCLE_BUILD_NUM
   junit-output:
     type: boolean
     default: false
