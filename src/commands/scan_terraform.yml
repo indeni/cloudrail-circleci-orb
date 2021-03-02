@@ -30,13 +30,39 @@ parameters:
       The name of the JUnit output file.
     type: string
     default: cloudrail-junit.xml
+  ignore_cloudrail_crashes:
+    description: |
+      If true, Cloudrail crashes will be ignored. The CI build will *only* fail
+      if Cloudrail successfully runs and finds violations of mandated rules.
+
+      More info:
+      1. Cloudrail's exit codes are documented here: https://indeni.com/doc-indeni-cloudrail/integrate-with-ci-cd/.
+      2. Any exit code greater than 1 will be ignored (rewritten to 0).
+    type: boolean
+    default: false
 
 steps:
   - run:
       name: Analyze Terraform plan with Cloudrail
       command: |
+        <<# parameters.ignore_cloudrail_crashes >>
+        # If ignore_cloudrail_crashes is true, we don't want to terminate
+        # execution if 'cloudrail' fails.
+        set +e
+        <</ parameters.ignore_cloudrail_crashes >>
+
         cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" \
           --origin ci --build-link "$CIRCLE_BUILD_URL"  --execution-source-identifier "<<parameters.execution-source-identifier>>"  \
           --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" \
           <<# parameters.junit-output >> --output-format junit --output-file "<<parameters.junit-output-file>>" <</ parameters.junit-output >> \
           --auto-approve
+
+        <<# parameters.ignore_cloudrail_crashes >>
+        rc=$?
+        if [[ $rc -gt 1 ]] ; then
+          echo "Re-writing exit code of $rc to 0, as ignore_cloudrail_crashes is true"
+          exit 0
+        else
+          exit $rc
+        fi
+        <</ parameters.ignore_cloudrail_crashes >>
