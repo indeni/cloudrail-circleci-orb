@@ -39,4 +39,4 @@ steps:
           --origin ci --build-link "$CIRCLE_BUILD_URL"  --execution-source-identifier "<<parameters.execution-source-identifier>>"  \
           --api-key "<<parameters.cloudrail_api_key>>" --cloud-account-id "<<parameters.cloud-account-id>>" \
           <<# parameters.junit-output >> --output-format junit --output-file "<<parameters.junit-output-file>>" <</ parameters.junit-output >> \
-          --auto-approve
+          --auto-approve --no-fail-on-service-error
