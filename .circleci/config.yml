@@ -47,7 +47,6 @@ jobs:
       - attach_workspace:
           at: .
       - cloudrail/scan_terraform:
-          cloudrail_api_key: $TEST_CLOUDRAIL_API_KEY
           cloudrail_api_key_envvar_name: TEST_CLOUDRAIL_API_KEY
           cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
           plan_output_file: src/tests/sample_tf/plan.out
@@ -77,7 +76,6 @@ jobs:
       - attach_workspace:
           at: .
       - cloudrail/scan_terraform:
-          cloudrail_api_key: $TEST_CLOUDRAIL_API_KEY
           cloudrail_api_key_envvar_name: TEST_CLOUDRAIL_API_KEY
           cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
           plan_output_file: src/tests/sample_tf/plan.out
