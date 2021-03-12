@@ -1,10 +1,10 @@
 description: >
-  An example where Terraform and Cloudrail are used to produce a JUnit-formatted output file.
+  An example where Cloudrail is used to produce a JUnit-formatted output file.
 
 usage:
   version: 2.1
   orbs:
-    cloudrail: indeni/cloudrail@1.4.0
+    cloudrail: indeni/cloudrail@2.0.0
   workflows:
     use_cloudrail:
       jobs:
@@ -12,7 +12,7 @@ usage:
         - cloudrail/scan_terraform:
             requires:
               - some_job_that_creates_a_tf_plan
-            cloudrail_api_key: my_key
+            cloudrail_api_key_envvar_name: CLOUDRAIL_API_KEY
             plan_output_file: location_of_tf_plan_file_created_in_previous_job
             cloud-account-id: "123456789012"
             tf_directory: directory_where_tf_files_are

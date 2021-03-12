@@ -4,9 +4,9 @@ description: >
 executor: default
 
 parameters:
-  cloudrail_api_key:
+  cloudrail_api_key_envvar_name:
     description: |
-      The Cloudrail API key to use.
+      The name of the environment variable containing the Cloudrail API key to use.
     type: string
   plan_output_file:
     description: |
@@ -35,7 +35,7 @@ steps:
       steps:
         - run: mkdir -p "/tmp/junit/cloudrail"
   - scan_terraform:
-      cloudrail_api_key: << parameters.cloudrail_api_key >>
+      cloudrail_api_key_envvar_name: << parameters.cloudrail_api_key_envvar_name >>
       plan_output_file: << parameters.plan_output_file >>
       tf_directory: << parameters.tf_directory >>
       cloud-account-id: << parameters.cloud-account-id >>

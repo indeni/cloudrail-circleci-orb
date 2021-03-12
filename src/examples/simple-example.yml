@@ -4,7 +4,7 @@ description: >
 usage:
   version: 2.1
   orbs:
-    cloudrail: indeni/cloudrail@1.4.0
+    cloudrail: indeni/cloudrail@2.0.0
   jobs:
     some_job_that_creates_a_tf_plan:
       docker:
@@ -24,7 +24,7 @@ usage:
         - cloudrail/scan_terraform:
             requires:
               - some_job_that_creates_a_tf_plan
-            cloudrail_api_key: my_key
+            cloudrail_api_key_envvar_name: CLOUDRAIL_API_KEY
             cloud-account-id: "123456789012"
             tf_directory: /tmp/workspace/
             plan_output_file: /tmp/workspace/terraform.plan
