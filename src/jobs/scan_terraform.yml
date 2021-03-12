@@ -28,18 +28,12 @@ parameters:
   junit-output:
     type: boolean
     default: false
-  junit-output-file:
-    description: |
-      The name of the JUnit output file. CircleCI requires JUnit output files to be in a subdirectory.
-    type: string
-    default: test_results/cloudrail-junit.xml
-
 
 steps:
   - when:
       condition: << parameters.junit-output >>
       steps:
-        - run: mkdir -p "$(dirname << parameters.junit-output-file >>)"
+        - run: mkdir -p "/tmp/junit/cloudrail"
   - scan_terraform:
       cloudrail_api_key: << parameters.cloudrail_api_key >>
       plan_output_file: << parameters.plan_output_file >>
@@ -47,9 +41,9 @@ steps:
       cloud-account-id: << parameters.cloud-account-id >>
       execution-source-identifier: << parameters.execution-source-identifier >>
       junit-output:  << parameters.junit-output >>
-      junit-output-file: << parameters.junit-output-file >>
+      junit-output-file: /tmp/junit/cloudrail/results.xml
   - when:
       condition: << parameters.junit-output >>
       steps:
         - store_test_results:
-            path: "$(dirname << parameters.junit-output-file >>)"
+            path: /tmp/junit
