@@ -29,8 +29,16 @@ parameters:
     type: boolean
     default: false
   working_directory:
+    description: |
+      Where the Terraform init was done within the code.
     type: string
     default: ~/project
+  workspace:
+    description: |
+      Where to attach a workspace - this is used to pass a Terraform plan from a previous job into this one.
+    type: string
+    default: .
+
 
 working_directory: <<parameters.working_directory>>
 
@@ -39,6 +47,8 @@ steps:
       condition: << parameters.junit-output >>
       steps:
         - run: mkdir -p "/tmp/junit/cloudrail"
+  - attach_workspace:
+      at: <<parameters.workspace>>
   - run:
       name: Analyze Terraform plan with Cloudrail
       command: |
