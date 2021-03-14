@@ -28,9 +28,6 @@ parameters:
   junit-output:
     type: boolean
     default: false
-  working_directory:
-    type: string
-    default: ~/project
 
 steps:
   - when:
