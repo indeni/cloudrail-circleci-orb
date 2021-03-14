@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
  - API key is now the envrionment variable's name, instead of the actual value
 ### Removed
- - junit-specific command
+ - both commands - users should use only the job for now (command will return when non-Cloudrail executor supported)
 
 ## 1.7.0 - 2021-03-02
 ### Changed
