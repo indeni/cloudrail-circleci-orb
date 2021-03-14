@@ -38,19 +38,6 @@ jobs:
           root: .
           paths:
             - .
-  # Test regular usage, no JUnit
-  integration-test-1-actual:
-    working_directory: /tmp/test_1
-    docker:
-      - image: indeni/cloudrail-cli:latest
-    steps:
-      - attach_workspace:
-          at: .
-      - cloudrail/scan_terraform:
-          cloudrail_api_key_envvar_name: TEST_CLOUDRAIL_API_KEY
-          cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
-          plan_output_file: src/tests/sample_tf/plan.out
-          tf_directory: src/tests/sample_tf
   integration-test-2-prep:
     working_directory: /tmp/test_2
     docker:
@@ -67,20 +54,6 @@ jobs:
           root: .
           paths:
             - .
-  # Test JUnit output
-  integration-test-2-actual:
-    working_directory: /tmp/test_2
-    docker:
-      - image: indeni/cloudrail-cli:latest
-    steps:
-      - attach_workspace:
-          at: .
-      - cloudrail/scan_terraform:
-          cloudrail_api_key_envvar_name: TEST_CLOUDRAIL_API_KEY
-          cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
-          plan_output_file: src/tests/sample_tf/plan.out
-          tf_directory: src/tests/sample_tf
-          junit-output: true
 workflows:
   test-pack:
     unless: << pipeline.parameters.run-integration-tests >>
@@ -112,16 +85,39 @@ workflows:
       # Run any integration tests defined within the `jobs` key.
       - integration-test-1-prep:
           context: orb-publishing
-      - integration-test-1-actual:
+
+      # Test without JUnit output
+      - cloudrail/scan_terraform:
           context: orb-publishing
           requires:
             - integration-test-1-prep
+          steps:
+            - attach_workspace:
+                at: .
+          working_directory: /tmp/test_1
+          cloudrail_api_key_envvar_name: TEST_CLOUDRAIL_API_KEY
+          cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
+          plan_output_file: src/tests/sample_tf/plan.out
+          tf_directory: src/tests/sample_tf
+
       - integration-test-2-prep:
           context: orb-publishing
-      - integration-test-2-actual:
+
+      # Test with JUnit publishing
+      - cloudrail/scan_terraform:
           context: orb-publishing
           requires:
             - integration-test-2-prep
+          steps:
+            - attach_workspace:
+                at: .
+          working_directory: /tmp/test_2
+          cloudrail_api_key_envvar_name: TEST_CLOUDRAIL_API_KEY
+          cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
+          plan_output_file: src/tests/sample_tf/plan.out
+          tf_directory: src/tests/sample_tf
+          junit-output: true
+
       # Publish a semver version of the orb. relies on
       # the commit subject containing the text "[semver:patch|minor|major|skip]"
       # as that will determine whether a patch, minor or major
