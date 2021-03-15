@@ -5,6 +5,18 @@ usage:
   version: 2.1
   orbs:
     cloudrail: indeni/cloudrail@2.0.0
+  jobs:
+    some_job_that_creates_a_tf_plan:
+      docker:
+        - image: hashicorp/terraform:latest
+      steps:
+        - checkout
+        - terraform init
+        - terraform plan -out terraform.plan
+        - persist_to_workspace:
+            root: .
+            paths:
+              - ./
   workflows:
     use_cloudrail:
       jobs:

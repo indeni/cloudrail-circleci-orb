@@ -1,13 +1,13 @@
 description: >
-  A simple, straightforward usage of Cloudrail to scan a Terraform plan.
+  A job for running Cloudrail scanning of a Terraform plan which was created in a previous job.
 
 executor: default
 
 parameters:
-  cloudrail_api_key_envvar_name:
+  cloudrail_api_key:
     description: |
       The name of the environment variable containing the Cloudrail API key to use.
-    type: string
+    type: env_var_name
   plan_output_file:
     description: |
       The plan file that was created with "terraform plan -out=filename".
@@ -30,7 +30,7 @@ parameters:
       When set to true, the Cloudrail job will save a JUnit-formatted result output. Any rules set to MANDATE that fail will
       generate failed tests which are then viewable in the CircleCI Test tab.
     type: boolean
-    default: false
+    default: true
   working_directory:
     description: |
       Where the Terraform init was done within the code.

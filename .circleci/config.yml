@@ -97,6 +97,7 @@ workflows:
           cloud-account-id: $TEST_CLOUDRAIL_ACCOUNT_ID
           plan_output_file: src/tests/sample_tf/plan.out
           tf_directory: src/tests/sample_tf
+          junit-output: false
 
       - integration-test-2-prep:
           context: orb-publishing
