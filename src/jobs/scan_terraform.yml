@@ -1,13 +1,13 @@
 description: >
-  A simple, straightforward usage of Cloudrail to scan a Terraform plan.
+  A job for running Cloudrail scanning of a Terraform plan which was created in a previous job.
 
 executor: default
 
 parameters:
   cloudrail_api_key:
     description: |
-      The Cloudrail API key to use.
-    type: string
+      The name of the environment variable containing the Cloudrail API key to use.
+    type: env_var_name
   plan_output_file:
     description: |
       The plan file that was created with "terraform plan -out=filename".
@@ -26,22 +26,40 @@ parameters:
     type: string
     default: $CIRCLE_PROJECT_REPONAME - $CIRCLE_BRANCH - $CIRCLE_BUILD_NUM
   junit-output:
+    description: |
+      When set to true, the Cloudrail job will save a JUnit-formatted result output. Any rules set to MANDATE that fail will
+      generate failed tests which are then viewable in the CircleCI Test tab.
     type: boolean
-    default: false
+    default: true
+  working_directory:
+    description: |
+      Where the Terraform init was done within the code.
+    type: string
+    default: ~/project
+  workspace:
+    description: |
+      Where to attach a workspace - this is used to pass a Terraform plan (and any required files) from a previous job into this one.
+    type: string
+    default: .
+
+
+working_directory: <<parameters.working_directory>>
 
 steps:
   - when:
       condition: << parameters.junit-output >>
       steps:
         - run: mkdir -p "/tmp/junit/cloudrail"
-  - scan_terraform:
-      cloudrail_api_key: << parameters.cloudrail_api_key >>
-      plan_output_file: << parameters.plan_output_file >>
-      tf_directory: << parameters.tf_directory >>
-      cloud-account-id: << parameters.cloud-account-id >>
-      execution-source-identifier: << parameters.execution-source-identifier >>
-      junit-output:  << parameters.junit-output >>
-      junit-output-file: /tmp/junit/cloudrail/results.xml
+  - attach_workspace:
+      at: <<parameters.workspace>>
+  - run:
+      name: Analyze Terraform plan with Cloudrail
+      command: |
+        cloudrail run --directory "<<parameters.tf_directory>>" --tf-plan "<<parameters.plan_output_file>>" \
+          --origin ci --build-link "$CIRCLE_BUILD_URL"  --execution-source-identifier "<<parameters.execution-source-identifier>>"  \
+          --api-key ${<<parameters.cloudrail_api_key>>} --cloud-account-id "<<parameters.cloud-account-id>>" \
+          <<# parameters.junit-output >> --output-format junit --output-file /tmp/junit/cloudrail/results.xml <</ parameters.junit-output >> \
+          --auto-approve --no-fail-on-service-error
   - when:
       condition: << parameters.junit-output >>
       steps:
