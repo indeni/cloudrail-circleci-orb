@@ -24,7 +24,7 @@ usage:
         - cloudrail/scan_terraform:
             requires:
               - some_job_that_creates_a_tf_plan
-            cloudrail_api_key_envvar_name: CLOUDRAIL_API_KEY
+            cloudrail_api_key: CLOUDRAIL_API_KEY
             plan_output_file: location_of_tf_plan_file_created_in_previous_job
             cloud-account-id: "123456789012"
             tf_directory: directory_where_tf_files_are
