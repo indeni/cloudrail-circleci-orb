@@ -26,6 +26,9 @@ parameters:
     type: string
     default: $CIRCLE_PROJECT_REPONAME - $CIRCLE_BRANCH - $CIRCLE_BUILD_NUM
   junit-output:
+    description: |
+      When set to true, the Cloudrail job will save a JUnit-formatted result output. Any rules set to MANDATE that fail will
+      generate failed tests which are then viewable in the CircleCI Test tab.
     type: boolean
     default: false
   working_directory:
@@ -35,7 +38,7 @@ parameters:
     default: ~/project
   workspace:
     description: |
-      Where to attach a workspace - this is used to pass a Terraform plan from a previous job into this one.
+      Where to attach a workspace - this is used to pass a Terraform plan (and any required files) from a previous job into this one.
     type: string
     default: .
 
